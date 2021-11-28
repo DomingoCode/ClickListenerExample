@@ -10,8 +10,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.clicklisteneractivity.R
 import com.example.clicklisteneractivity.model.State
 
-class StateListRVAdapter: ListAdapter<State, StateListRVAdapter.StateViewHolder>(DiffCallback()) {
+class StateListRVAdapter : ListAdapter<State, StateListRVAdapter.StateViewHolder>(DiffCallback()) {
     var states = ArrayList<State>()
+    
+    //notify activity about click
+    var onClicked: ((State) -> Unit)? = null
     
     fun setUpdatedList(newStates: ArrayList<State>) {
         this.states = newStates
@@ -20,8 +23,7 @@ class StateListRVAdapter: ListAdapter<State, StateListRVAdapter.StateViewHolder>
     
     inner class StateViewHolder(
         itemView: View,
-    ) :
-        RecyclerView.ViewHolder(itemView) {
+    ) : RecyclerView.ViewHolder(itemView) {
         private val stateName: TextView = itemView.findViewById(R.id.stateName)
         
         fun bind(state: State) {
@@ -35,26 +37,13 @@ class StateListRVAdapter: ListAdapter<State, StateListRVAdapter.StateViewHolder>
         return StateViewHolder(view)
     }
     
-   
+    
     override fun onBindViewHolder(holder: StateViewHolder, position: Int) {
         holder.bind(states[position])
-        holder.itemView.setOnClickListener(object: View.OnClickListener {
-            override fun onClick(v: View?) {
-                onClickListener?.onItemClick(states[position])
-            }
-        })
+        holder.itemView.setOnClickListener { onClicked?.invoke(states[position]) }
     }
     
     override fun getItemCount(): Int = states.size
-    
-    //notify activity about click event via interface [MyClickListener]
-    private var onClickListener: MyClickListener? = null
-    fun setMyOnClickListener(listener: MyClickListener) {
-        this.onClickListener = listener
-    }
-    interface MyClickListener {
-        fun onItemClick(item: State)
-    }
     
     class DiffCallback : DiffUtil.ItemCallback<State>() {
         override fun areItemsTheSame(

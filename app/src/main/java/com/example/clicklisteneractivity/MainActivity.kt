@@ -17,9 +17,11 @@ import com.example.clicklisteneractivity.viewmodel.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class MainActivity : AppCompatActivity(), StateListRVAdapter.MyClickListener {
+class MainActivity : AppCompatActivity() {
     private var stateListAdapter = StateListRVAdapter()
     private lateinit var viewModel: MainViewModel
+    
+    
     
     private var _binding: ActivityMainBinding? = null
     val binding get() = _binding!!
@@ -44,10 +46,10 @@ class MainActivity : AppCompatActivity(), StateListRVAdapter.MyClickListener {
         val decoration = DividerItemDecoration(this@MainActivity, DividerItemDecoration.VERTICAL)
         stateListRV.addItemDecoration(decoration)
         stateListAdapter = StateListRVAdapter()
-        stateListAdapter.setMyOnClickListener(this@MainActivity)
+        stateListAdapter.apply {
+            onClicked = ::adapterOnClick//refer correspondent methods
+        }
         stateListRV.adapter = stateListAdapter
-        
-        
     }
     
     private fun observeViewModel() {
@@ -58,7 +60,7 @@ class MainActivity : AppCompatActivity(), StateListRVAdapter.MyClickListener {
         })
     }
     
-    override fun onItemClick(item: State) {
+    private fun adapterOnClick(item: State) {
         Toast.makeText(this, "onItemClick item = ${item.state}", Toast.LENGTH_LONG).show()
     }
     
