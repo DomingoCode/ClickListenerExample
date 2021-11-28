@@ -47,7 +47,7 @@ class StateListRVAdapter: ListAdapter<State, StateListRVAdapter.StateViewHolder>
     
     override fun getItemCount(): Int = states.size
     
-    //notify activity about double click event
+    //notify activity about click event via interface [MyClickListener]
     private var onClickListener: MyClickListener? = null
     fun setMyOnClickListener(listener: MyClickListener) {
         this.onClickListener = listener

@@ -43,7 +43,7 @@ class MainActivity : AppCompatActivity(), StateListRVAdapter.MyClickListener {
         stateListRV.layoutManager = LinearLayoutManager(this@MainActivity)
         val decoration = DividerItemDecoration(this@MainActivity, DividerItemDecoration.VERTICAL)
         stateListRV.addItemDecoration(decoration)
-        stateListAdapter = StateListRVAdapter()//{state -> adapterOnClick()}
+        stateListAdapter = StateListRVAdapter()
         stateListAdapter.setMyOnClickListener(this@MainActivity)
         stateListRV.adapter = stateListAdapter
         
